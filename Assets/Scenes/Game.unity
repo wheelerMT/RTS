@@ -3953,7 +3953,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5144958, y: 0.000000025555284, z: -0.000000015333171, w: 0.8574929}
+  m_LocalRotation: {x: 0.5144958, y: -0.00000003817452, z: 0.000000022904715, w: 0.8574929}
   m_LocalPosition: {x: 3.17, y: 13.7, z: -64.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4051,6 +4051,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTarget: {fileID: 1997800346}
   keyboardPanSpeed: 15
+  cinemachineCamera: {fileID: 1260129704}
+  zoomSpeed: 1
+  minZoomDistance: 7.5
 --- !u!1001 &332197402
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14733,7 +14736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260129701}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51449573, y: 0.000000025555284, z: -0.000000015333171, w: 0.8574929}
+  m_LocalRotation: {x: 0.5144958, y: -0.000000038174516, z: 0.000000022904711, w: 0.8574929}
   m_LocalPosition: {x: 3.17, y: 13.7, z: -64.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
