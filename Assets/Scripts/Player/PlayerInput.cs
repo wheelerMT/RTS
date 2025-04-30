@@ -10,14 +10,22 @@ namespace Player
         [SerializeField] private float keyboardPanSpeed = 5;
         [SerializeField] private CinemachineCamera cinemachineCamera;
         [SerializeField] private float zoomSpeed = 1;
+        [SerializeField] private float rotationSpeed = 1;
         [SerializeField] private float minZoomDistance = 7.5f;
 
         private CinemachineFollow _cinemachineFollow;
+        private float _maxRotationAmount;
+        private float _rotationStartTime;
         private Vector3 _startingFollowOffset;
         private float _zoomStartTime;
 
         private static bool ShouldSetZoomStartTime => Keyboard.current.endKey.wasPressedThisFrame ||
                                                       Keyboard.current.endKey.wasReleasedThisFrame;
+
+        private static bool ShouldSetRotationStartTime => Keyboard.current.pageUpKey.wasPressedThisFrame ||
+                                                          Keyboard.current.pageDownKey.wasPressedThisFrame ||
+                                                          Keyboard.current.pageUpKey.wasReleasedThisFrame ||
+                                                          Keyboard.current.pageDownKey.wasReleasedThisFrame;
 
         private void Awake()
         {
@@ -25,12 +33,33 @@ namespace Player
                 Debug.LogError("Cinemachine Camera did not have CinemachineFollow. Zoom functionality will not work!");
 
             _startingFollowOffset = _cinemachineFollow.FollowOffset;
+            _maxRotationAmount = Mathf.Abs(_cinemachineFollow.FollowOffset.z);
         }
 
         private void Update()
         {
             HandlePanning();
             HandleZooming();
+            HandleRotation();
+        }
+
+        private void HandleRotation()
+        {
+            if (ShouldSetRotationStartTime) _rotationStartTime = Time.time;
+
+            var rotationTime = Mathf.Clamp01((Time.time - _rotationStartTime) * rotationSpeed);
+
+            Vector3 targetFollowOffset;
+            if (Keyboard.current.pageDownKey.isPressed)
+                targetFollowOffset = new Vector3(_maxRotationAmount, _cinemachineFollow.FollowOffset.y, 0);
+            else if (Keyboard.current.pageUpKey.isPressed)
+                targetFollowOffset = new Vector3(-_maxRotationAmount, _cinemachineFollow.FollowOffset.y, 0);
+            else
+                targetFollowOffset = new Vector3(_startingFollowOffset.x, _cinemachineFollow.FollowOffset.y,
+                    _startingFollowOffset.z);
+
+            _cinemachineFollow.FollowOffset =
+                Vector3.Slerp(_cinemachineFollow.FollowOffset, targetFollowOffset, rotationTime);
         }
 
         private void HandleZooming()
